@@ -7,9 +7,7 @@ const {
     userJoin,
     getCurrentUser,
     userLeave,
-    getTownUsers,
-    sendTo,
-    privateUserJoin
+    getTownUsers
 } = require('./utils/users');
 
 const app = express();
@@ -36,8 +34,7 @@ io.on('connection', socket => {
         socket.emit('user', user.username)
 
         // Welcome current user
-         socket.emit('message', formatMessage(botName, 'Welcome to Facebook!'));
-     
+        socket.emit('message', formatMessage(botName, 'Welcome to Facebook!'));
 
         // Broadcast when a user connects
         socket.broadcast
@@ -78,34 +75,6 @@ io.on('connection', socket => {
             });
         }
     });
-
-
-    // private chat 
-    let userToSend;
-    socket.on('privateUser',user=>{
-       socket.emit('privateChatUser',user);
-      
-        userToSend = user;
-        console.log(userToSend); 
-       
-    });
-
-    socket.on('messageInput',msg =>{
-        
-        const users = getCurrentUser(socket.id);
-        console.log("current USer",users);
-        const send_to = sendTo(userToSend);
-        console.log("userToSend: ",send_to);
-        const user = privateUserJoin(socket.id, users.username, send_to.username);
-        socket.join(send_to.username);
-        console.log("message: "+ msg);
-        // console.log("username: "+send_to.username);
-        console.log("whole user: "+ user);
-        // socket.to(send_to).emit('messageUserInput', formatMessage(users, msg));
-        io.to(send_to.username).emit('messageUserInput', formatMessage(users, msg));
-
-    })
-
 });
 
 const PORT = process.env.PORT || 3000;

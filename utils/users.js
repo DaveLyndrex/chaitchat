@@ -28,25 +28,9 @@ function getTownUsers(town) {
     return users.filter(user => user.town === town);
 }
 
-// getPrivate user
-function sendTo(userSend){
-    return users.find(user => user.username === userSend);
-}
-
-function privateUserJoin(id,currentUser,receiver){
-    const joinprivate = { id, currentUser, receiver };
-
-    users.push(joinprivate);
-
-    return joinprivate;
-}
-
-
 module.exports = {
     userJoin,
     getCurrentUser,
     userLeave,
-    getTownUsers,
-    sendTo,
-    privateUserJoin
+    getTownUsers
 };
