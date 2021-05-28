@@ -46,6 +46,44 @@ socket.on('message', (message) => {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
+
+// private user
+
+socket.on('privateChatUser',(user)=>{
+    $('#chatHeader').text(user);
+})
+    
+
+// private message (Dli pani makuha)
+socket.on('messageUserInput', (msg) =>{
+    console.log("hellllloooooooo????");
+    duoMessage(msg);
+
+})
+
+// output Message for Private Message
+ let messageBox = document.getElementById('message-box');
+
+function duoMessage(msg){
+    const createDiv = document.createElement('div');
+    createDiv.classList.add('divStyle');
+    const para1 = document.createElement('p');
+    para1.classList.add('para1');
+    para1.innerText = msg.username;
+    para1.innerHTML += `<span>${msg.time}</span>`;
+    createDiv.appendChild(para1);
+    const para2 = document.createElement('p');
+    para2.classList.add('para2');
+    para2.innerText = msg.text;
+
+    // if (message.username == username) {
+    //     div.classList.add('user');
+    // } else {     
+    // }
+    createDiv.appendChild(para2);
+    messageBox.appendChild(createDiv);
+}
+
 // Message submit
 chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -67,6 +105,7 @@ chatForm.addEventListener('submit', (e) => {
     e.target.elements.msg.focus();
 });
 
+
 // Output message to DOM
 function outputMessage(message) {
 
@@ -83,8 +122,7 @@ function outputMessage(message) {
 
     if (message.username == username) {
         div.classList.add('user');
-    } else {
-
+    } else {     
     }
     div.appendChild(para);
     document.querySelector('.chat-messages').appendChild(div);
@@ -99,9 +137,10 @@ function outputTownName(town) {
 function outputUsers(users) {
     userList.innerHTML = '';
     users.forEach((user) => {
-        const li = document.createElement('li');
-        li.innerText = user.username;
-        userList.appendChild(li);
+        // const li = document.createElement('li');
+        // li.innerText = user.username;
+        // userList.appendChild(li);
+        $('#users').append(`<li><a type="submit" id="${user.username}" onclick="private(this.id)">${user.username}</a></li>`)
     });
 }
 
@@ -112,3 +151,32 @@ document.getElementById('leave-btn').addEventListener('click', () => {
         window.location = '../index.html';
     } else {}
 });
+
+
+// privateMessage Div pop up
+function private(user){   
+    $('#privateMessageContainer').css('display','flex');
+    socket.emit('privateUser',user);
+}
+
+
+
+let privateChat = document.getElementById('private_chat');
+
+privateChat.addEventListener('submit', (e) => {
+e.preventDefault();
+
+// Get message text
+let msg = $('#private_user_message').val();
+msg = msg.trim();
+
+if (!msg) {
+    return false;
+}
+
+// Emit message to server
+socket.emit('messageInput', msg);
+
+// Clear input
+msg.value = '';
+});s
