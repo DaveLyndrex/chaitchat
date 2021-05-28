@@ -4,8 +4,8 @@
     "description": "Realtime chat bot",
     "main": "server.js",
     "scripts": {
-        "test": "node server",
-        "start": "nodemon server"
+        "start": "node server",
+        "test": "nodemon server"
     },
     "repository": {
         "type": "git",
