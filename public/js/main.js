@@ -2,6 +2,8 @@ const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
 const townName = document.getElementById('town-name');
 const userList = document.getElementById('users');
+const anchorName = document.getElementById('anchorname');
+const spanName = document.getElementById('spanName');
 
 // Get username and room from URL
 const { username, town } = Qs.parse(location.search, {
@@ -18,7 +20,6 @@ $('.msg').keyup(() => {
     })
 })
 
-
 socket.on("nagtypeba", (data) => {
     $('.typing').html(data.typing ? `${data.name} is typing...` : '')
 })
@@ -26,7 +27,11 @@ socket.on("nagtypeba", (data) => {
 // Join chatroom
 socket.emit('joinTown', { username, town });
 
-// Get room and users
+socket.on('user', (user) => {
+        anchorName.innerText = user;
+        spanName.innerText = user;
+    })
+    // Get room and users
 socket.on('townUsers', ({ town, users }) => {
     outputTownName(town);
     outputUsers(users);
@@ -75,6 +80,12 @@ function outputMessage(message) {
     const para = document.createElement('p');
     para.classList.add('text');
     para.innerText = message.text;
+
+    if (message.username == username) {
+        div.classList.add('user');
+    } else {
+
+    }
     div.appendChild(para);
     document.querySelector('.chat-messages').appendChild(div);
 }

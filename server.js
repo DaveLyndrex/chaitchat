@@ -31,6 +31,8 @@ io.on('connection', socket => {
 
         socket.join(user.town);
 
+        socket.emit('user', user.username)
+
         // Welcome current user
         socket.emit('message', formatMessage(botName, 'Welcome to Facebook!'));
 

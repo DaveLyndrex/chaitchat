@@ -114,6 +114,11 @@
         background-color: rgb(240, 240, 240);
         border-radius: 5px;
         overflow-wrap: break-word;
+        width: 75%;
+    }
+    
+    .user {
+        margin-left: 25%;
     }
     
     .chat-messages .message .meta {
@@ -215,12 +220,4 @@
     .text {
         margin-left: 20%;
         font-size: small;
-    }
-    
-    .meta {
-        margin-left: 20%;
-    }
-    
-    .chat-messages {
-        margin-left: 20%;
     }
